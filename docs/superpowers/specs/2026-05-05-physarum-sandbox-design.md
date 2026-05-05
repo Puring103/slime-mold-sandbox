@@ -1,335 +1,357 @@
-# Physarum Sandbox Design
+# 黏菌沙盒设计文档
 
-## Project Overview
+## 一、项目概述
 
-This project is a browser-based slime mold sandbox focused on feeding and simulation rather than science education. The experience centers on observing a digital Physarum-like organism evolve on its own inside a 2D dish while the user arranges food, hazards, and obstacles.
+这是一个基于浏览器的黏菌沙盒网站，核心聚焦在“饲养与模拟”，而不是科普介绍。用户通过在二维培养皿中布置食物、有害物质和障碍，观察一个类似 `Physarum polycephalum` 的数字黏菌自行扩张、连接、收缩、休眠与复苏。
 
-The product goal for the first version is to feel visually close to real slime mold behavior without requiring strict biological accuracy. The user should be able to create interesting scenarios quickly and watch believable outcomes emerge: expansion toward food, detours around hazards, consolidation into thicker veins, branch retraction, sclerotium formation, and revival when conditions improve.
+首版目标不是严格复刻生物实验，而是在视觉和行为上尽量接近真实黏菌，让用户能够快速搭建一个场景，并稳定看到这些有趣结果：
 
-## Product Direction
+- 朝营养源扩张
+- 绕开有害区域和障碍
+- 形成主脉络并加粗
+- 回收低价值支路
+- 在不利条件下菌核化
+- 条件恢复后再次苏醒
 
-### Chosen Product Shape
+## 二、产品方向
 
-- Product type: interactive feeding and simulation website
-- Scope: sandbox only
-- No science encyclopedia or educational content in the first version
-- No preset challenge levels in the first version
-- No temperature or humidity management
+### 2.1 已确定的产品形态
 
-### Target Experience
+- 产品类型：互动养成 / 模拟网站
+- 体验类型：沙盒
+- 首版不做科普内容
+- 首版不做任务关卡
+- 首版不模拟温度、湿度等环境参数
 
-The site should feel like an observation terrarium rather than a click-heavy pet game. The organism evolves automatically. The user controls the scene, not the creature directly.
+### 2.2 核心体验
 
-The main interaction loop is:
+产品应更像一个“可观察生态箱”，而不是一个高频点击的宠物游戏。黏菌自己演化，用户负责布置场景与调节观察速度。
 
-1. Place a sclerotium or active inoculation point
-2. Add different food sources
-3. Add obstacles and harmful substances
-4. Adjust simulation speed
-5. Observe expansion, routing, retreat, dormancy, and recovery
-6. Reset and try a new arrangement
+核心循环如下：
 
-## Visual Direction
+1. 放置菌核或初始接种点
+2. 放置不同类型的食物
+3. 放置有害物质和障碍
+4. 调整模拟速度
+5. 观察扩张、寻路、收缩、休眠和复苏
+6. 重置场景并继续实验
 
-The visual style should lean toward a believable slime mold look rather than a scientific graph or a pixel-art game. The organism should appear moist, organic, and slightly pulsing, while still remaining legible as a system.
+## 三、视觉方向
 
-Visual priorities:
+整体视觉应偏“接近真实黏菌”的有机生命感，而不是科学图表风格，也不是像素游戏风格。
 
-- Organic edges rather than rigid geometry
-- Color shifts that communicate organism state
-- Vein thickening after successful connections
-- Subtle motion that suggests living material
-- Clear contrast between food, obstacles, harmful zones, and dormant tissue
+视觉重点如下：
 
-## First-Version Feature Set
+- 边缘轮廓要有机，不应过于硬朗
+- 颜色变化用于表达状态变化
+- 连接成功后主脉络应明显加粗
+- 动态效果应缓慢、湿润、像活体
+- 食物、障碍、有害区域、菌核状态要有清晰区分
 
-The first version should stay tightly focused on the simulation sandbox.
+## 四、首版功能范围
 
-### Core Modules
+首版只围绕模拟沙盒展开，避免加入分散注意力的系统。
 
-1. Main dish canvas
-   - Displays the organism body, veins, leading front, food, hazards, and obstacles
+### 4.1 核心模块
 
-2. Placement tools
-   - Sclerotium
-   - Food types
-   - Harmful substances
-   - Obstacles
-   - Eraser / clear brush
+1. 主培养皿画布
+   - 显示黏菌本体、脉络、前沿、食物、有害物和障碍
 
-3. Time controls
-   - Pause
+2. 投放工具
+   - 菌核
+   - 食物
+   - 有害物质
+   - 障碍
+   - 擦除 / 清除笔刷
+
+3. 时间控制
+   - 暂停
    - 1x
    - 5x
    - 20x
 
-4. Observation panel
-   - Occupied area
-   - Active front count
-   - Connected food count
-   - Dormant node count
-   - Overall activity trend
+4. 状态观察面板
+   - 占据面积
+   - 活跃前沿数量
+   - 已连接食物数量
+   - 菌核数量
+   - 整体活性趋势
 
-5. Reset tools
-   - Clear all
-   - Random scene
-   - Re-seed organism
+5. 重置工具
+   - 一键清空
+   - 随机场景
+   - 重新播种
 
-6. Export
-   - Screenshot export only for the first version
+6. 导出
+   - 首版只做静态截图导出
 
-### Explicitly Out of Scope
+### 4.2 明确不做的内容
 
-- Accounts and persistence
-- Community sharing
-- Challenge levels and goals
-- Educational encyclopedia content
-- Full environmental simulation such as temperature or humidity
-- Strict biochemical realism
-- Multi-colony competition
-- Advanced learning or habituation systems
+- 账号系统和云端存档
+- 社区分享
+- 任务、目标或闯关系统
+- 科普百科内容
+- 温度、湿度等完整环境模拟
+- 严格生化级别的真实性
+- 多菌落竞争
+- 高级学习 / 习惯化系统
 
-## Simulation Design
+## 五、模拟方案总览
 
-### High-Level Model
+### 5.1 推荐的模拟抽象
 
-The simulation should use a hybrid model:
+首版建议使用以下混合模型：
 
-- Field-driven environment
-- Front-based growth
-- Vein reinforcement and pruning
-- Sclerotium state transitions
+- 场驱动环境
+- 前沿生长
+- 脉络强化与回收
+- 菌核状态切换
 
-This is recommended over a pure shortest-path model because it produces more believable exploration. It is also recommended over a full fluid or particle simulation because it is more controllable and feasible for a first version.
+这条路线比“直接计算最短路”更像真实黏菌的探索行为，也比“全流体 / 全粒子模拟”更容易控制和落地，适合作为第一版实现方向。
 
-### World Representation
+### 5.2 世界表示
 
-The dish should maintain at least six layers of state.
+培养皿内部至少维护以下六层状态：
 
-1. Nutrient attraction field
-   - Emitted by food sources
-   - Diffuses outward and decays over distance and time
+1. 营养吸引场
+   - 由食物持续释放
+   - 向周围扩散并随距离和时间衰减
 
-2. Hazard / repulsion field
-   - Emitted by harmful substances
-   - May diffuse or remain localized depending on type
+2. 毒害 / 排斥场
+   - 由有害物质释放
+   - 不同类型可以选择扩散或局部固定
 
-3. Obstacle field
-   - Hard obstacles are impassable
-   - Soft obstacles increase movement cost and encourage edge-following detours
+3. 障碍场
+   - 硬障碍完全不可通过
+   - 软障碍会提高推进成本，鼓励黏菌绕行或贴边移动
 
-4. Organism activity field
-   - Tracks active front, stable vein, retreating tissue, and sclerotium
+4. 黏菌活性场
+   - 表示该区域是活跃前沿、稳定脉络、衰退组织还是菌核
 
-5. Vein thickness field
-   - Represents the strength and permanence of established transport routes
+5. 脉络厚度场
+   - 表示运输通道的重要程度与稳定程度
 
-6. Local resource / flow field
-   - A simplified value representing whether a route is worth maintaining
+6. 局部资源 / 流量场
+   - 用于判断某条路线是否值得继续保留
 
-### Organism States
+## 六、黏菌状态设计
 
-The organism should use four primary states.
+黏菌本体建议使用四种主要状态。
 
-1. Active front
-   - Brightest visual state
-   - Expands into favorable nearby territory
+### 6.1 活跃前沿
 
-2. Stable vein
-   - Slightly darker and thicker
-   - Maintains transport between valuable locations
+- 颜色最亮
+- 负责向有利方向推进
+- 是主要生长边缘
 
-3. Retreating tissue
-   - Darkens and thins
-   - Indicates low value, starvation, or damage
+### 6.2 稳定脉络
 
-4. Sclerotium
-   - Brown-orange dormant state
-   - Static but capable of reactivation if nearby conditions improve
+- 颜色略深，宽度更粗
+- 负责维持食物与菌核之间的有效连接
 
-### Update Loop
+### 6.3 衰退组织
 
-Each simulation tick should update in this order.
+- 颜色变暗，厚度变薄
+- 表示该区域正在失去价值或受到损伤
 
-1. Update environmental fields
-   - Diffuse and decay nutrient signals
-   - Diffuse and decay hazard signals as appropriate
+### 6.4 菌核
 
-2. Sense local neighborhood
-   - Active fronts sample nearby attraction, repulsion, and movement resistance
-   - Movement should prefer high reward and low harm, with some randomness to avoid robotic behavior
+- 偏褐黄或橙褐色
+- 静止不动
+- 可在条件改善后重新激活
 
-3. Advance active fronts
-   - Expand into favored cells or positions
-   - Deposit organism mass in newly occupied space
+## 七、单步演化流程
 
-4. Reinforce successful routes
-   - Paths that connect a viable organism core to valuable food become thicker and more stable
+每个模拟 tick 建议按以下顺序更新：
 
-5. Retract low-value routes
-   - Thin, remote, low-flow, or low-reward branches begin to darken and shrink
+1. 更新环境场
+   - 营养场扩散并衰减
+   - 毒害场扩散并衰减
 
-6. Apply damage
-   - Harmful zones reduce activity, encourage retreat, or trigger state degradation
+2. 感知邻域
+   - 活跃前沿读取周围吸引、排斥和阻力信息
+   - 优先朝高收益、低毒害、低阻力方向推进
+   - 保留一定随机性，避免行为过于机械
 
-7. Evaluate dormancy
-   - Persistently isolated, starved, or damaged tissue may convert to sclerotium
-   - Dormant tissue may reactivate if a strong food gradient appears nearby
+3. 推进前沿
+   - 占领新的区域
+   - 在新位置沉积黏菌质量
 
-## Materials System
+4. 强化有效通路
+   - 成功连接到高价值食物的路径会逐步增厚并稳定下来
 
-The material system should be broad enough to produce interesting behaviors while remaining simple enough to tune.
+5. 回收低价值支路
+   - 低流量、低收益、远离有效连接的区域开始变薄和收缩
 
-### Food Types
+6. 结算伤害
+   - 位于有害区域中的组织会被减速、压制、收缩或击穿
 
-Three food classes are recommended for the first version.
+7. 判定菌核化
+   - 长期饥饿、隔离或受损的组织进入菌核态
+   - 菌核附近若再次出现足够强的营养梯度，则可恢复活性
 
-1. Stable food
-   - Medium-high attraction
-   - High nutrition capacity
-   - Supports long-term thick vein formation
+## 八、物质系统设计
 
-2. Burst food
-   - Very high short-term attraction
-   - Low lasting capacity
-   - Triggers aggressive expansion but is consumed quickly
+物质系统应当足以制造差异化行为，但不要复杂到难以调参。
 
-3. Diffuse food
-   - Lower attraction strength
-   - Larger radius of influence
-   - Useful for remote steering and gradual guidance
+### 8.1 食物类型
 
-Each food type should vary by:
+首版建议保留 3 类食物。
 
-- Attraction strength
-- Influence range
-- Nutrition capacity
-- Decay rate
+#### 1. 稳定食物
 
-### Harmful Substances
+- 吸引力中高
+- 营养容量高
+- 容易形成稳定主脉络
 
-Harmful substances should not all behave like walls. They should differ by how strongly they repel, weaken, or kill tissue.
+#### 2. 速效食物
 
-Four hazard classes are recommended for the first version.
+- 短时间吸引力很强
+- 持续时间较短
+- 容易引发快速扩张，但很快耗尽
 
-1. Salt
-   - High repulsion
-   - Medium damage
-   - Good for boundaries and exclusion zones
+#### 3. 扩散食物
 
-2. Caffeine / quinine-like repellent
-   - High repulsion
-   - Low to medium damage
-   - Good for forcing reroutes without immediate destruction
+- 单点吸引力较弱
+- 影响范围较大
+- 适合远距离引导和慢速诱导
 
-3. Bright light patch
-   - Medium repulsion
-   - Medium damage
-   - Functions as a hostile region rather than a chemical object
-
-4. Disinfectant / heavy contamination
-   - Medium repulsion
-   - High damage
-   - Can locally sterilize or kill tissue
-
-Each hazard type should vary by:
-
-- Repulsion strength
-- Toxicity
-- Influence range
-- Decay rate
-
-### Obstacles
-
-Two obstacle types are recommended.
-
-1. Hard obstacle
-   - Never passable
-   - Used for barriers, walls, stones, or partitions
-
-2. Soft obstacle
-   - Passable only with difficulty or over longer time
-   - Encourages detours and edge-following behavior
-
-## Sclerotium Design
-
-Sclerotium should be more than a starting marker. It should function as a full organism state.
-
-### Sclerotium Triggers
-
-Local tissue can convert into sclerotium when one or more of the following persist:
-
-- Long-term lack of reachable nutrition
-- Separation from valuable transport routes
-- Repeated damage from harmful substances
-- Sustained low local flow / low network value
-
-### Reactivation
-
-Dormant sclerotium may reactivate when:
-
-- A strong enough nutrient gradient appears nearby
-- Adjacent living tissue reconnects to it
-
-This allows the simulation to produce "death and revival" behavior instead of simple deletion.
-
-## Behavior Goals
-
-The simulation should reliably produce the following visible outcomes.
-
-1. Expansion toward nearby or strongly attractive food
-2. Detouring around salt, bright light, or repellent zones
-3. Wide exploratory branching before network consolidation
-4. Thickening of high-value routes after successful connection
-5. Retraction and darkening of weak branches
-6. Local dormancy in isolated or damaged regions
-7. Reactivation when food appears near dormant tissue
-
-If these outcomes are consistently visible, the first version is succeeding.
-
-## Behavioral Rules That Matter Most
-
-### Preserve These
-
-1. Expand faster than you retract
-   - Growth should feel exploratory
-   - Retraction should feel like delayed judgment
-
-2. Use local choices to create global structure
-   - Do not calculate perfect paths directly
-
-3. Let states transition with inertia
-   - Connection, thickening, retreat, and dormancy should feel gradual
-
-4. Treat hazards as pressure, not only collision
-   - Many hazards should repel first and kill later
-
-### Avoid These
-
-1. Instant best-path selection
-2. Uniform radial blob growth with no pruning
-3. One-hit deletion for all harmful substances
-4. Identical behavior for all foods except color
-
-## Parameter Schema
-
-To keep tuning manageable, materials should share consistent parameter shapes.
-
-### Food Parameters
+每类食物统一使用以下参数：
 
 - `attraction_strength`
 - `range`
 - `nutrition_capacity`
 - `decay_rate`
 
-### Hazard Parameters
+### 8.2 有害物质类型
+
+有害物不应统一表现为“碰到就死”，而应在“排斥、压制、损伤、灭活”之间形成差异。
+
+首版建议保留 4 类有害物。
+
+#### 1. 盐
+
+- 高排斥
+- 中等伤害
+- 适合做边界、禁区和围栏
+
+#### 2. 咖啡因 / 奎宁类排斥物
+
+- 高排斥
+- 低到中等伤害
+- 更适合诱导绕行，而不是直接杀伤
+
+#### 3. 强光斑块
+
+- 中等排斥
+- 中等伤害
+- 作为环境压力区存在，而不是普通障碍
+
+#### 4. 消毒剂 / 重污染区
+
+- 中等排斥
+- 高伤害
+- 可以局部灭活黏菌组织
+
+每类有害物统一使用以下参数：
 
 - `repulsion_strength`
 - `toxicity`
 - `range`
 - `decay_rate`
 
-### Tissue Parameters
+### 8.3 障碍类型
+
+首版建议保留两类障碍。
+
+#### 1. 硬障碍
+
+- 完全不可通行
+- 适合墙、隔板、石块等结构
+
+#### 2. 软障碍
+
+- 可以通过，但成本更高
+- 更适合制造“贴边绕行”的行为
+
+## 九、菌核设计
+
+菌核不应只是开局放置点，而应是一个完整的生命状态。
+
+### 9.1 菌核化触发条件
+
+当局部组织长期处于以下情况时，可转入菌核：
+
+- 周围长期缺乏可达营养
+- 与高价值运输通路断开
+- 重复遭受有害物伤害
+- 局部流量长期过低
+
+### 9.2 菌核复苏条件
+
+菌核可在以下条件下重新激活：
+
+- 附近出现足够强的营养梯度
+- 相邻活体组织重新连接到它
+
+这样系统会表现出“死亡与复苏”的生命感，而不是简单删除。
+
+## 十、关键行为目标
+
+如果模拟方向正确，首版应稳定产生以下现象：
+
+1. 黏菌朝最近或最强食物源扩张
+2. 遇到盐、强光或排斥物时明显绕开
+3. 同时面对多个食物时，先广泛分叉再逐步收敛
+4. 成功连接后主脉络明显加粗
+5. 低价值支路逐渐变暗、变细、收缩
+6. 被隔离或长期受损的区域转入菌核态
+7. 新食物出现在菌核附近时，黏菌重新复活
+
+如果这 7 类结果都能稳定出现，说明首版模拟方向是成功的。
+
+## 十一、最重要的行为原则
+
+### 11.1 必须保留的特征
+
+1. 扩张速度应快于回收速度
+   - 这样才有“先探索、后整理”的观感
+
+2. 局部决策生成全局结构
+   - 不应直接计算完美最短路
+
+3. 状态切换应有惯性
+   - 接触、连接、增厚、衰退、菌核化都应逐步发生
+
+4. 有害物应先表现为压力，再表现为致命性
+   - 先回避、减速、萎缩，再进入严重损伤或休眠
+
+### 11.2 应避免的结果
+
+1. 一开始就直接走出最优路径
+2. 像油漆一样均匀铺开，没有脉络回收
+3. 所有有害物都表现为一碰就死
+4. 所有食物除了颜色外没有行为差异
+
+## 十二、统一参数结构
+
+为了便于调参与扩展，推荐所有物质使用统一参数结构。
+
+### 12.1 食物参数
+
+- `attraction_strength`
+- `range`
+- `nutrition_capacity`
+- `decay_rate`
+
+### 12.2 有害物参数
+
+- `repulsion_strength`
+- `toxicity`
+- `range`
+- `decay_rate`
+
+### 12.3 黏菌组织参数
 
 - `mass`
 - `activity`
@@ -337,59 +359,59 @@ To keep tuning manageable, materials should share consistent parameter shapes.
 - `damage`
 - `dormancy`
 
-## Time Design
+## 十三、时间系统
 
-The simulation should support multiple observation speeds without changing rule logic.
+时间系统应支持不同观察速度，但不改变规则本身。
 
-- `1x`: best for watching local edge motion and state transitions
-- `5x`: default observation speed
-- `20x`: best for spotting long-term routing and collapse behavior
+- `1x`：适合观察边缘变化和状态切换
+- `5x`：适合作为默认观看速度
+- `20x`：适合观察长期结构变化和整体兴衰
 
-The system should keep the same rules across all speed modes and only alter the rate or grouping of simulation ticks.
+不同速度模式下，应保持同一套演化规则，只调整 tick 推进频率或每次推进的步数。
 
-## Recommended Technical Direction
+## 十四、推荐技术路线
 
-The recommended implementation direction for the first version is:
+从产品目标与首版工程可控性来看，推荐采用以下实现方向：
 
-- 2D dish simulation
-- Scalar fields for attraction, repulsion, and occupancy
-- Active-front updates each tick
-- Vein reinforcement and low-value pruning
-- Dormancy through a simple state machine
+- 二维培养皿模拟
+- 标量场表示吸引、排斥和占据状态
+- 每个 tick 更新活跃前沿
+- 对已连接路径做强化，对低价值路径做回收
+- 用简单状态机处理菌核化与复苏
 
-This direction best balances realism, performance, clarity, and feasibility.
+这条路线在真实性、可控性、性能和实现难度之间最平衡。
 
-## Risks and Tradeoffs
+## 十五、主要风险与应对
 
-### Main Risks
+### 15.1 主要风险
 
-1. Over-simplified growth may look like paint spread rather than organism behavior
-2. Over-complex simulation may delay delivery and make tuning difficult
-3. Too many material types too early may create balance problems
-4. Excessive UI controls may weaken the sandbox immediacy
+1. 生长规则过于简单，结果会像颜料扩散而不是黏菌
+2. 模拟机制过于复杂，首版难以调通
+3. 物质种类过多，导致平衡混乱
+4. 控制面板过重，削弱沙盒的即时性
 
-### Mitigations
+### 15.2 应对方式
 
-1. Focus on front behavior and vein pruning first
-2. Use a unified parameter system for all materials
-3. Keep the first release to three food types and four hazards
-4. Make color and thickness do most of the explanatory work
+1. 优先把前沿行为与脉络回收做好
+2. 所有物质统一参数结构，方便整体调参
+3. 首版控制在 3 类食物和 4 类有害物
+4. 尽量让颜色和厚度承担状态表达，减少说明负担
 
-## Reference Notes
+## 十六、参考结论
 
-The design above is informed by recurring themes in the literature:
+本设计的抽象方向主要依据以下文献中反复出现的行为特征：
 
-- Physarum expands toward nutrient gradients
-- It tends to explore broadly and later consolidate transport networks
-- Oscillatory internal flow and delayed structural adaptation are key parts of its behavior
-- Food quality changes search strategy
-- Harmful stimuli often cause avoidance, slowing, damage, or dormancy rather than instant death
+- 黏菌会沿营养梯度扩张
+- 它会先广泛探索，再整理运输网络
+- 内部脉动和延迟结构调整是重要特征
+- 食物质量会影响搜索策略
+- 有害刺激通常先表现为回避、减速、损伤或休眠，而不是瞬时死亡
 
-Relevant references:
+对应参考来源包括：
 
-- Behavioral Ecology 2009: food quality affects search strategy
-- PLOS ONE 2014: oscillatory and signaling dynamics
-- PLOS ONE 2019: flow and dynamical behavior
-- Jeff Jones 2015 papers: transport network approximation and emergent routing
-- Frontiers 2015: classic attractants and Physarum behavior background
-- Frontiers 2019: organism-scale rhythmic behavior
+- Behavioral Ecology 2009：食物质量影响搜索策略
+- PLOS ONE 2014：振荡与信号行为
+- PLOS ONE 2019：流动与动力学行为
+- Jeff Jones 2015 两篇：运输网络近似与涌现式寻路
+- Frontiers 2015：经典吸引物与 Physarum 行为背景
+- Frontiers 2019：整体节律行为
