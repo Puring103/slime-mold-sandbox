@@ -1,0 +1,206 @@
+:root {
+  color: #f6efe2;
+  background: #141411;
+  font-family:
+    "Aptos",
+    "Segoe UI",
+    sans-serif;
+  --line: rgba(246, 239, 226, 0.16);
+  --panel: rgba(15, 17, 12, 0.72);
+  --panel-strong: rgba(30, 35, 24, 0.84);
+  --accent: #e1c467;
+  --muted: #b7af9a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(195, 197, 132, 0.14), transparent 28rem),
+    linear-gradient(135deg, #11120f 0%, #1f211b 52%, #18150f 100%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 18px;
+}
+
+.hero-band {
+  display: flex;
+  align-items: end;
+  min-height: 16vh;
+  padding: 18px 0 14px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-band h1 {
+  margin: 0;
+  max-width: 720px;
+  font-size: clamp(30px, 5vw, 52px);
+  line-height: 1.05;
+  font-weight: 600;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(320px, 1fr) minmax(220px, 260px);
+  gap: 18px;
+  align-items: start;
+}
+
+.dish-stage {
+  display: grid;
+  min-height: min(78vh, 880px);
+  place-items: center;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(190, 185, 121, 0.09), transparent 20rem),
+    linear-gradient(180deg, rgba(16, 19, 13, 0.74), rgba(9, 10, 8, 0.9));
+}
+
+.dish-canvas {
+  width: min(82vmin, 760px);
+  aspect-ratio: 1;
+  display: block;
+  touch-action: none;
+}
+
+.panel {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
+}
+
+.toolbar {
+  display: grid;
+  gap: 14px;
+}
+
+.toolbar-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.control-field {
+  display: grid;
+  gap: 8px;
+  min-width: 100%;
+  color: var(--muted);
+}
+
+.tool-button,
+.controls-row button,
+.segmented button {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(246, 239, 226, 0.12);
+  border-radius: 10px;
+  background: rgba(246, 239, 226, 0.05);
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.tool-button.active,
+.segmented button.active {
+  border-color: rgba(225, 196, 103, 0.42);
+  background: rgba(225, 196, 103, 0.18);
+}
+
+.tool-button:hover,
+.controls-row button:hover,
+.segmented button:hover {
+  background: rgba(246, 239, 226, 0.1);
+}
+
+.tool-button:active,
+.controls-row button:active,
+.segmented button:active {
+  transform: scale(0.98);
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stats-panel h2 {
+  margin: 0 0 14px;
+  font-size: 18px;
+}
+
+.stats-panel dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.stats-panel dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(246, 239, 226, 0.08);
+}
+
+.stats-panel dt {
+  color: var(--muted);
+}
+
+.stats-panel dd {
+  margin: 0;
+}
+
+@media (max-width: 1120px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar-group {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .app-shell {
+    padding: 12px;
+  }
+
+  .toolbar-group {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dish-canvas {
+    width: min(92vw, 620px);
+  }
+}
